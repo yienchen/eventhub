@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>EchoHub Client</title>
+    <meta charset="utf-8" />
+    <script src="Scripts/jquery-1.6.4.min.js"></script>
+    <script src="Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <!--<script src="/signalr/hubs"></script>-->
+    <script src="http://localhost:55414/signalr/hubs"></script>
+
+    <script>
+        $(function () {
+            var hub = $.connection.echo;
+            $.connection.hub.url = "http://localhost:55414/signalr";
+
+            hub.client.greetings = function (message) {
+                var li = $('<li/>').html(message);
+                $('#messages').append(li);
+            };
+
+            $.connection.hub
+                .start()
+                .done(function () {
+                    
+                    var li = $('<li/>').html("Event hub is started!");
+                    $('#messages').append(li);
+
+                    $('#send')
+                        .click(function () {
+                            hub.server.hello();
+                        });
+                });
+        });
+    </script>
+
+</head>
+<body>
+    <h4>EchoHub Client</h4>
+    <div></div>
+    <button id="send">Say Hello!</button>
+    <ul id="messages"></ul>
+</body>
+</html>
